@@ -11,21 +11,13 @@ def select_file():
     filetypes = (('JPG Files', '*.jpg'),('All files', '*.*'))
     filename = fd.askopenfilename(title='Open a file',initialdir='/',filetypes=filetypes)
     print(filename)
-    #reading image
-    image = cv2.imread(r'{}'.format(filename))
+    #reading img
+    img = cv2.imread(r'{}'.format(filename))
 
-    #converting BGR image to grayscale
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    #image inversion
-    inverted_image = 255 - gray_image
-
-    blurred = cv2.GaussianBlur(inverted_image, (21, 21), 0)
-    inverted_blurred = 255 - blurred
-    pencil_sketch = cv2.divide(gray_image, inverted_blurred, scale=256.0)
+    dst_gray, dst_color = cv2.pencilSketch(img, sigma_s=60, sigma_r=0.07, shade_factor=0.05)
     savepath = "C:\\Sketches"
 
-    cv2.imwrite(os.path.join(savepath ,"sketch.jpg"), pencil_sketch)
+    cv2.imwrite(os.path.join(savepath ,"sketch.jpg"), dst_gray)
     cv2.waitKey(0)
 
 
@@ -34,7 +26,7 @@ def select_file():
 # Creating Root1
 
 root = tk.Tk()
-root.title('Insketch')
+root.title('InSketch')
 
 window_width = 1280
 window_height = 720
